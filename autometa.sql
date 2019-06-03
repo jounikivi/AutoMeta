@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 28, 2019 at 12:59 PM
+-- Generation Time: Jun 03, 2019 at 11:22 AM
 -- Server version: 10.3.13-MariaDB-2
 -- PHP Version: 7.2.17-0ubuntu0.19.04.1
 
@@ -23,103 +23,150 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `collection`
+-- Table structure for table `gallery`
 --
 
-CREATE TABLE `collection` (
-  `id` int(11) NOT NULL,
-  `Filename` int(11) DEFAULT NULL,
-  `label` int(11) DEFAULT NULL,
-  `Faces` int(11) DEFAULT NULL,
-  `landmark` int(11) DEFAULT NULL,
-  `object` int(11) DEFAULT NULL,
-  `Accuracy` int(11) DEFAULT NULL
+CREATE TABLE `gallery` (
+  `gallery_id` int(11) NOT NULL,
+  `picture_id` int(11) NOT NULL,
+  `keyword` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `search`
+-- Table structure for table `keywords`
 --
 
-CREATE TABLE `search` (
-  `id` int(11) NOT NULL,
-  `Keywords` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL
+CREATE TABLE `keywords` (
+  `keyword_id` int(11) NOT NULL,
+  `keyword` varchar(255) COLLATE utf8mb4_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 --
--- Dumping data for table `search`
+-- Dumping data for table `keywords`
 --
 
-INSERT INTO `search` (`id`, `Keywords`) VALUES
-(1, 'age '),
-(2, 'male '),
-(3, 'female'),
-(4, 'adult '),
-(5, 'baby '),
+INSERT INTO `keywords` (`keyword_id`, `keyword`) VALUES
+(15, 'Cheerleader'),
 (6, 'Child'),
-(7, 'teenager'),
+(4, 'adult '),
+(48, 'africa  '),
+(1, 'age '),
+(44, 'airplane  '),
+(49, 'america  '),
+(47, 'asia  '),
 (8, 'attorney'),
 (9, 'audience'),
 (10, 'author'),
+(5, 'baby '),
+(25, 'bear  '),
+(53, 'beverge'),
+(42, 'bicycle  '),
+(28, 'bird  '),
 (11, 'bishop'),
 (12, 'blacksmith]'),
+(43, 'boat  '),
 (13, 'bride'),
+(45, 'buildings  '),
+(26, 'camel  '),
 (14, 'cantor'),
-(15, 'Cheerleader'),
+(40, 'car  '),
+(24, 'cat  '),
 (16, 'chef '),
+(50, 'clothing  '),
 (17, 'clown'),
 (18, 'coach '),
 (19, 'competitor'),
 (20, 'concessionaire'),
-(21, 'cowboy '),
-(22, 'fish  '),
-(23, 'dog'),
-(24, 'cat  '),
-(25, 'bear  '),
-(26, 'camel  '),
 (27, 'cow  '),
-(28, 'bird  '),
-(29, 'wolf  '),
+(21, 'cowboy '),
+(23, 'dog'),
+(46, 'europe  '),
+(3, 'female'),
+(22, 'fish  '),
+(52, 'food  '),
 (30, 'grass  '),
 (31, 'leaves  '),
 (32, 'lichen  '),
+(2, 'male '),
 (33, 'moss  '),
+(41, 'motorbike  '),
 (34, 'seaweed  '),
 (35, 'shrub  '),
+(38, 'sports  '),
+(7, 'teenager'),
 (36, 'thistle  '),
 (37, 'tree  '),
-(38, 'sports  '),
 (39, 'weather  '),
-(40, 'car  '),
-(41, 'motorbike  '),
-(42, 'bicycle  '),
-(43, 'boat  '),
-(44, 'airplane  '),
-(45, 'buildings  '),
-(46, 'europe  '),
-(47, 'asia  '),
-(48, 'africa  '),
-(49, 'america  '),
-(50, 'clothing  '),
 (51, 'wedding  '),
-(52, 'food  '),
-(53, 'beverge');
+(29, 'wolf  ');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pictures`
+--
+
+CREATE TABLE `pictures` (
+  `picture_id` int(11) NOT NULL,
+  `picturename` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `location` varchar(255) COLLATE utf8mb4_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `verified` tinyint(1) NOT NULL DEFAULT 0,
+  `token` varchar(255) DEFAULT NULL,
+  `user_type` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `email`, `verified`, `token`, `user_type`, `password`) VALUES
+(5286, 'tommi', 't.laiho@gmail.com', 0, '24f71f5171dd44f1ae9011768d07de0e8cb2dc6e83199d7d30273b935fa3a82794e61a3c69c6bfb5f98ab5ff267fbc9ce21c', 'user', '$2y$10$itDL8uje/.30LZ7pVQSgHOgdbwN5tLaICZEGYeazvk0vm0KHIyonK');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `collection`
+-- Indexes for table `gallery`
 --
-ALTER TABLE `collection`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `gallery`
+  ADD PRIMARY KEY (`gallery_id`,`picture_id`,`keyword`,`user_id`),
+  ADD UNIQUE KEY `PK_gallery` (`keyword`,`picture_id`,`user_id`) USING BTREE,
+  ADD KEY `picture_view` (`picture_id`),
+  ADD KEY `user_view` (`user_id`);
 
 --
--- Indexes for table `search`
+-- Indexes for table `keywords`
 --
-ALTER TABLE `search`
+ALTER TABLE `keywords`
+  ADD PRIMARY KEY (`keyword`);
+
+--
+-- Indexes for table `pictures`
+--
+ALTER TABLE `pictures`
+  ADD PRIMARY KEY (`picture_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -127,10 +174,31 @@ ALTER TABLE `search`
 --
 
 --
--- AUTO_INCREMENT for table `search`
+-- AUTO_INCREMENT for table `gallery`
 --
-ALTER TABLE `search`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+ALTER TABLE `gallery`
+  MODIFY `gallery_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `pictures`
+--
+ALTER TABLE `pictures`
+  MODIFY `picture_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5287;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `gallery`
+--
+ALTER TABLE `gallery`
+  ADD CONSTRAINT `picture_view` FOREIGN KEY (`picture_id`) REFERENCES `pictures` (`picture_id`),
+  ADD CONSTRAINT `user_view` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
